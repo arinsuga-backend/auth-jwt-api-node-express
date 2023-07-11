@@ -64,7 +64,7 @@ const changePassword = (req, res) => {
 }
 
 
-export {
+module.exports = {
     authUser, logout,
     all, register, update, remove,
     disable, changePassword

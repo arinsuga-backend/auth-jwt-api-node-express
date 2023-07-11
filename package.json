@@ -2,24 +2,24 @@
   "name": "authjwtmern",
   "version": "1.0.0",
   "description": "JWT Authentication MERN",
-  "type": "module",
-  "main": "index.js",
+  "type": "commonjs",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node backend/server.js",
-    "server": "nodemon backend/server.js"
-
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "serv": "npm run server"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cookie-parse": "^0.4.0",
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.3.1"
+    "jsonwebtoken": "^9.0.1",
+    "mongoose": "^7.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"

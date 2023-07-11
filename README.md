@@ -1,2 +1,0 @@
-# authjwtmern
-JWT Authentication MERN

@@ -1,9 +1,17 @@
-import express from 'express';
-import {
+// import express from 'express';
+// import {
+//     authUser, logout,
+//     all, register, update, remove,
+//     disable, changePassword
+// } from '../controllers/userController.js';
+
+const express = require('express');
+const {
     authUser, logout,
     all, register, update, remove,
     disable, changePassword
-} from '../controllers/userController.js';
+} = require('../controllers/userController.js');
+
 const router = express.Router();
 
 //Login
@@ -38,4 +46,4 @@ router.put('/disable', disable);
 //PUT /api/users/change-password
 router.put('/change-password', changePassword);
 
-export default router;
+module.exports = router;
