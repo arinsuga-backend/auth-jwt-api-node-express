@@ -13,8 +13,9 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT;
 
-//midlewares
+//midleware for json encode/decode
 app.use(express.json());
+//middleware for enabled post request.body (input form / json input)
 app.use(express.urlencoded({ extended: true }));
 
 //Route User
