@@ -1,13 +1,13 @@
 // import express from 'express';
 // import {
 //     authUser, logout,
-//     all, register, update, remove,
+//     all, register, update, remove, 
 //     disable, changePassword
 // } from '../controllers/userController.js';
 
 const express = require('express');
 const {
-    authUser, logout,
+    login, logout,
     all, register, update, remove,
     disable, changePassword
 } = require('../controllers/userController.js');
@@ -15,8 +15,8 @@ const {
 const router = express.Router();
 
 //Login
-//POST /api/users/auth
-router.post('/auth', authUser);
+//POST /api/users/login
+router.post('/login', login);
 
 //Logout
 //POST /api/users/logout

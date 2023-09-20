@@ -1,5 +1,6 @@
 //const fetch = requere('node-fetch');
 
+
 // import express from "express";
 // import dotenv from 'dotenv';
 // import userRoutes from './routes/userRoutes.js';
@@ -11,7 +12,7 @@ const userRoutes = require('./routes/userRoutes.js');
 
 dotenv.config();
 const app = express();
-const port = process.env.PORT;
+const port = process.env.APP_PORT;
 
 //midleware for json encode/decode
 app.use(express.json());
