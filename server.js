@@ -7,6 +7,7 @@
 
 const express = require('express');
 const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
 const userRoutes = require('./routes/userRoutes.js');
 
 
@@ -18,6 +19,8 @@ const port = process.env.APP_PORT;
 app.use(express.json());
 //middleware for enabled post request.body (input form / json input)
 app.use(express.urlencoded({ extended: true }));
+//middleware for cookie-parser (read cookie)
+app.use(cookieParser());
 
 //Route User
 app.use('/api/users', userRoutes);

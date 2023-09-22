@@ -7,12 +7,21 @@
 
 const express = require('express');
 const {
+    verifyTokenGet, verifyTokenPost,
     login, logout,
     all, register, update, remove,
     disable, changePassword
 } = require('../controllers/userController.js');
 
 const router = express.Router();
+
+//Verifiy Token via Get Request
+//GET /api/users/verify-token-get
+router.get('/verify-token-get', verifyTokenGet);
+
+//Verifiy Token via Get Request
+//GET /api/users/verify-token-get
+router.post('/verify-token-post', verifyTokenPost);
 
 //Login
 //POST /api/users/login
