@@ -8,8 +8,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
+const authRoutes = require('./routes/authRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
-
 
 dotenv.config();
 const app = express();
@@ -17,11 +17,13 @@ const port = process.env.APP_PORT;
 
 //midleware for json encode/decode
 app.use(express.json());
-//middleware for enabled post request.body (input form / json input)
+//middleware for enabled post request.body (input form / json input) x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 //middleware for cookie-parser (read cookie)
 app.use(cookieParser());
 
+//Route Auth
+app.use('/api/auth', authRoutes);
 //Route User
 app.use('/api/users', userRoutes);
 
