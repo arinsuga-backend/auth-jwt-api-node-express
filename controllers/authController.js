@@ -1,5 +1,9 @@
 const jwt = require('jsonwebtoken')
 const { serialize } = require('cookie')
+const mongoose = require('mongoose')
+//const dotenv = require('dotenv')
+
+const userSchema = require('../models/user.js')
 
 //Login
 //POST /api/users/login
@@ -38,8 +42,33 @@ const logout = (req, res) => {
 //Register New User
 //POST /api/users/register
 const register = (req, res) => {
+
+    const modelData = {};
+    if (req.body.username) {
+        modelData.username = req.body.username;
+    }
+    if (req.body.password) {
+        modelData.password = req.body.password;
+    }
+    if ( (req.body.username) && (req.body.password) ) {
+
+        modelData.status = true;
+
+        console.log(modelData);
+
+        const model = new userSchema(modelData);
+        model.save().then((err) => console.log('Registrasi berhasil'));
+
+        res.status(200).json({
+            status: 200,
+            message: 'Registrasi user berhasil'
+        });
+            
+    }
+
     res.status(200).json({
-        message: 'Registrasi user berhasil'
+        status: 500,
+        message: 'Registrasi user gagal'
     });
 }
 

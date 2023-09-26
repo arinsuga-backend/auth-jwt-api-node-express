@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { serialize } = require('cookie')
 
-
 //Verifiy Token via Get Request
 //GET /api/users/verify-token-get
 const verifyTokenGet = (req, res) => {
@@ -48,6 +47,7 @@ const all = (req, res) => {
     res.status(200).json({
         message: 'Menampilkan semua user'
     });
+
 }
 
 //Disable User
