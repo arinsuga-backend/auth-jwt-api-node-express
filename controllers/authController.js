@@ -43,13 +43,26 @@ const logout = (req, res) => {
 //POST /api/users/register
 const register = (req, res) => {
 
+    //Initial data object
     const modelData = {};
+
+    //valiadte if username defined
     if (req.body.username) {
         modelData.username = req.body.username;
     }
+
+    //validate if pasword defined
     if (req.body.password) {
         modelData.password = req.body.password;
     }
+
+    //validate if application name defined
+    modelData.app = null;
+    console.log(modelData.app);
+    if (req.body.app) {
+        modelData.app = req.body.app;
+    }
+
     if ( (req.body.username) && (req.body.password) ) {
 
         modelData.status = true;
