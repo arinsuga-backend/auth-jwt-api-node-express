@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const { serialize } = require('cookie')
 const userModel = require('../models/user.js')
+const passwordHelper = require('../helpers/password.js')
 
 //List User
 //GET /api/users
@@ -191,36 +192,29 @@ const changePassword = async (req, res) => {
     try {
 
         let data = await userModel.findById(req.params._id);
-        oripassword = data.password;
+        let oripassword = data.password;
+        let passwordChanged = await passwordHelper.change(oldpassword, oripassword, newpassword1, newpassword2);
 
-        if (oldpassword == oripassword) {
+        if (passwordChanged) {
 
-            if (newpassword1 == newpassword2) {
+            //coding update new password to database
+            let input = { password: newpassword1 };
+            data = await userModel.findByIdAndUpdate(req.params._id, input, {new:true});
 
-                res.status(200).json({
-                    status: 200,
-                    message: 'Ganti password berhasil',
-                    oripassowrd: oripassword
-                });
-    
-            } else {
+            res.status(200).json({
+                status: 200,
+                message: 'Ganti password berhasil',
+                data: data
+            });
 
-                res.status(404).json({
-                    status: 404,
-                    message: 'Ganti password tidak sesuai.'
-                });
-    
-            } //endif
-
-                
         } else {
 
+            console.log(err);
             res.status(404).json({
-                status: 404,
-                message: 'Ganti password tidak sesuai'
+                message: 'Ganti password gagal'
             });
-            
-        } //endif
+    
+        }
 
 
     } catch(err) {
