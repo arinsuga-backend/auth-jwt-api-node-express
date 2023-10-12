@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 
 //helpers
 const passwordHelper = require('../helpers/password.js');
+const jwtToken = require('../helpers/jwtToken.js');
 
 //Services
 const userModel = require('../models/user.js');
@@ -20,23 +21,24 @@ const login = async (req, res) => {
 
     try {
 
-        let data = await userModel.findOne( { username: username } );
-        password = data.password;
+        let user = await userModel.findOne( { username: username } );
+        password = user.password;
 
         let loginOk = await passwordHelper.isOk(inputPassword, password);
         if (loginOk) {
 
-            const token = jwt.sign({ username:req.body['username'] }, process.env.APP_SECRET, {expiresIn:'600s'})
-            const tokenSerialized = serialize('token', token, {
+            // const token = jwt.sign({ username:req.body['username'] }, process.env.APP_SECRET, {expiresIn:'600s'})
+            const token = jwtToken.create(user);
+            const httpOnlyCookie = serialize('token', token, {
                 httpOnly: true,
-                secure: process.env.APP_ENV === 'PROD',
+                secure: process.env.NODE_ENV === 'PROD',
                 sameSite: 'strict',
                 maxAge: process.env.APP_TOKEN_MAXAGE,
                 path: '/'
         
             })
 
-            res.setHeader('set-cookie', tokenSerialized)
+            res.setHeader('set-cookie', httpOnlyCookie)
             res.status(200).json({
                 message: 'JSON - Login berhasil V1.0',
                 token: token
@@ -53,6 +55,7 @@ const login = async (req, res) => {
 
     } catch(err) {
 
+        console.log(err);
         res.status(500).json({
             status: 500,
             message: 'Tidak bisa login...'
@@ -76,6 +79,20 @@ const logout = (req, res) => {
 //Register New User
 //POST /api/users/register
 const register = async (req, res) => {
+
+    let username = req.body.username;
+    let user = await userModel.findOne( { username: username } );
+
+    if (user) {
+
+        res.status(500).json({
+            status: 500,
+            message: 'Username sudah terdaftar'
+        });
+
+        return true;
+        
+    }
 
     //Initial data object
     const modelData = {};
@@ -105,13 +122,19 @@ const register = async (req, res) => {
         modelData.app = req.body.app;
     }
 
+    //validate if user roles defined
+    modelData.roles = null;
+    if (req.body.roles) {
+        modelData.roles = req.body.roles;
+    }
+
     if ( (req.body.username) && (req.body.password) ) {
 
         modelData.status = true;
 
         const model = new userModel(modelData);
         model.save()
-        .then((err) => console.log('Registrasi berhasil : ' + modelData.password));
+        .then((err) => console.log('Registrasi berhasil...'));
         // model.save();
 
         res.status(200).json({
@@ -122,7 +145,7 @@ const register = async (req, res) => {
             
     } else {
 
-        res.status(200).json({
+        res.status(500).json({
             status: 500,
             message: 'Registrasi user gagal'
         });
